@@ -13,10 +13,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-  <TextView android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:paddingTop="8dp">
+  <TextView android:id="@+id/main_title"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             style="@style/TitleText"
             android:text="@string/app_name"/>
+  <Spinner android:id="@+id/system_spinner"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"/>
 </LinearLayout>
 
