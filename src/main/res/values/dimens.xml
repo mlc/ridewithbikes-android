@@ -9,9 +9,6 @@
   -->
 
 <resources>
-  <color name="blue1">#ff7db4b5</color>
-  <color name="blue2">#ffe0eff1</color>
-  <color name="purple">#ff680148</color>
-  <color name="black">#ff000000</color>
-  <color name="darkgrey">#ff111111</color>
+  <dimen name="vertical_padding">8dp</dimen>
+  <dimen name="side_padding">10dp</dimen>
 </resources>

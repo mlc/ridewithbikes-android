@@ -13,9 +13,9 @@ package com.ridewithbikes.transit
 import Conversions._
 import Condition._
 import Result._
-import java.util.Calendar
 import annotation.tailrec
 import collection.mutable.ListBuffer
+import java.util.{TimeZone, Calendar}
 
 object Direction extends Enumeration {
   type Direction = Value
@@ -34,7 +34,9 @@ object System {
   protected val accept = checker(Yes) _
   protected val maybe  = checker(Maybe) _
 
-  val Systems = List(
+  lazy val NewYork = TimeZone.getTimeZone("America/New_York")
+
+  val Systems = Vector(
     new SimpleSystem("NYC Subway", 'train, accept(always, null)),
     new SimpleSystem("NYC Bus", 'bus, reject(always, null)),
     new SimpleSystem("Amtrak", 'train, reject(always, null)),
@@ -132,6 +134,7 @@ abstract class System(val name : String, val icon : Symbol, funs : ((Calendar, D
     System.friendly(base)
   }
 
+  override def toString = name
 }
 
 class SimpleSystem(name : String, icon : Symbol, funs : ((Calendar, Direction) => Result)*)
