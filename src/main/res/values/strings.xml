@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ride with Bikes</string>
+  <string name="app_name">Ride with Bikes</string>
   <string name="system_prompt">Choose a transit system…</string>
   <string name="can_i_take">Can I take my bike on</string>
   <string name="at">at</string>

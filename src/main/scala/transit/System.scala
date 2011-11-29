@@ -15,7 +15,7 @@ import Condition._
 import Result._
 import annotation.tailrec
 import collection.mutable.ListBuffer
-import java.util.{TimeZone, Calendar}
+import java.util.Calendar
 
 object Direction extends Enumeration {
   type Direction = Value
@@ -33,8 +33,6 @@ object System {
   protected val reject = checker(No) _
   protected val accept = checker(Yes) _
   protected val maybe  = checker(Maybe) _
-
-  lazy val NewYork = TimeZone.getTimeZone("America/New_York")
 
   val Systems = Vector(
     new SimpleSystem("NYC Subway", 'train, accept(always, null)),

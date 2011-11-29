@@ -14,11 +14,21 @@ import android.app.Activity
 import android.graphics.Typeface
 import android.os.Bundle
 import TypedResource._
-import android.text.format.DateUtils
 import java.util.{TimeZone, Locale, Calendar}
+import android.text.format.DateFormat
+import android.util.Log
+
+object BikeActivity {
+  val SET_DATE_REQUEST = 1
+  val SET_TIME_REQUEST = 2
+}
 
 class BikeActivity extends Activity with TypedActivity {
+  lazy val newYork = TimeZone.getTimeZone("America/New_York")
   lazy val junction = Typeface.createFromAsset(getAssets, "fonts/Junction.otf")
+
+  lazy val dateFormat = DateFormat.getMediumDateFormat(this)
+  lazy val timeFormat = DateFormat.getTimeFormat(this)
 
   lazy val mainTitle = findView(TR.main_title)
   lazy val systemSpinner = findView(TR.system_spinner)
@@ -37,11 +47,14 @@ class BikeActivity extends Activity with TypedActivity {
 
   override def onResume() {
     super.onResume()
-    chosenTime = Calendar.getInstance(Locale.US)
+    chosenTime = Calendar.getInstance(newYork, Locale.US)
     updateButtons()
   }
 
   private def updateButtons() {
-
+    val d = chosenTime.getTime
+    Log.d("BikeActivity", d.toString)
+    dateButton setText dateFormat.format(d)
+    timeButton setText timeFormat.format(d)
   }
 }

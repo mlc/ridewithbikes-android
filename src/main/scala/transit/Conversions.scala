@@ -20,16 +20,17 @@ object Conversions {
   }
 
   implicit def wrapCalendar(cal : Calendar) = new CalendarWrapper(cal)
+  implicit def unwrapCalendar(cw: CalendarWrapper) = cw.cal
 }
 
-class CalendarWrapper(cal : Calendar) {
+case class CalendarWrapper(cal : Calendar) {
   def isWeekend = {
     val dow = cal.get(Calendar.DAY_OF_WEEK)
     dow == Calendar.SATURDAY || dow == Calendar.SUNDAY
   }
   def isWeekday = !isWeekend
   def atHourMinute(h : Int, m : Int) = {
-    val instance = this.clone.asInstanceOf[Calendar]
+    val instance = cal.clone.asInstanceOf[Calendar]
     instance.set(Calendar.HOUR, h)
     instance.set(Calendar.MINUTE, m)
     instance.set(Calendar.SECOND, 0)
