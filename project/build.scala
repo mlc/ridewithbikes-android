@@ -7,7 +7,7 @@ object General {
   val settings = Defaults.defaultSettings ++ Seq (
     name := "Ride with Bikes",
     version := "0.1",
-    scalaVersion := "2.9.0-1",
+    scalaVersion := "2.9.1",
     platformName in Android := "android-7"
   )
 
@@ -28,9 +28,9 @@ object AndroidBuild extends Build {
     settings = General.fullAndroidSettings
   )
 
-  lazy val tests = Project (
-    "tests",
-    file("tests"),
-    settings = General.settings ++ AndroidTest.androidSettings
-  ) dependsOn main
+//  lazy val tests = Project (
+//    "tests",
+//    file("tests"),
+//    settings = General.settings ++ AndroidTest.androidSettings
+//  ) dependsOn main
 }
