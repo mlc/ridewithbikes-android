@@ -23,7 +23,7 @@ object Holiday {
     'Easter -> new Lunar("4/12/2009", "4/4/2010", "4/24/2011", "4/8/2012", "3/31/2013", "4/20/2014"),
     'Mother -> new MonthWeekDow(Calendar.MAY, 2, Calendar.SUNDAY),
     'MemorialFri -> new MonthWeekDow(Calendar.MAY, -1, Calendar.FRIDAY, -3),
-    'Memorial -> new MonthWeekDow(Calendar.MAY, -1, Calendar.FRIDAY),
+    'Memorial -> new MonthWeekDow(Calendar.MAY, -1, Calendar.MONDAY),
     'July3 -> new MonthDay(Calendar.JULY, 3),
     'July3Lirr -> new Holiday { def apply(c: Calendar) = {
       val m = c.get(Calendar.MONTH)
