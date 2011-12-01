@@ -49,9 +49,9 @@ object Condition {
         val day = c.get(Calendar.DAY_OF_MONTH)
         val dow = c.get(Calendar.DAY_OF_WEEK)
         if (month == Calendar.MAY)
-          (day - dow) >= 24
+          day >= (dow+1)%7 + 22
         else { /* must be september */
-          day <= (if (dow == 1) 8 else (dow-1))
+          day <= (dow+4)%7 + 1
         }
       }
     }

@@ -10,10 +10,9 @@
 
 package com.ridewithbikes.transit
 import org.specs2.Specification
-import java.text.SimpleDateFormat
-import java.util.{Calendar, Locale}
 import org.specs2.matcher.Matcher
 import org.specs2.specification.{Then, Given}
+import com.ridewithbikes.SpecHelper._
 
 class HolidaySpec extends Specification { def is =
   "Check the Holidays"                      ^
@@ -93,17 +92,12 @@ class HolidaySpec extends Specification { def is =
 
   class baseHoliday(beAsDesired : Matcher[Boolean]) extends Then[Symbol] {
     def extract(hol: Symbol, text: String) = {
-      val cal = Calendar.getInstance(Locale.US)
       val d = extract1(text)
-      cal.setTime(HolidaySpec.parser.parse(d))
+      val cal = makeDate(d)
       Holiday.HOLIDAYS(hol)(cal) must beAsDesired
     }
   }
 
   val holiday = new baseHoliday(beTrue)
   val notHoliday = new baseHoliday(beFalse)
-}
-
-object HolidaySpec {
-  val parser = new SimpleDateFormat("MMM d, yyyy", Locale.US)
 }
