@@ -9,12 +9,14 @@
 */
 
 package com.ridewithbikes
-import java.text.SimpleDateFormat
+import com.ridewithbikes.transit.System
 import java.util.{Calendar, Locale}
+import java.text.SimpleDateFormat
 
 object SpecHelper {
   val dateParser = new SimpleDateFormat("MMM d, yyyy", Locale.US)
   val timeParser = new SimpleDateFormat("h:mm a", Locale.US)
+  val dateTimeParser = new SimpleDateFormat("MMM d, yyyy h:mm a", Locale.US)
 
   def makeDay(weekday: Int) = {
     val cal = Calendar.getInstance(Locale.US)
@@ -22,15 +24,22 @@ object SpecHelper {
     cal
   }
 
-  def makeTime(t: String) = {
+  private def parse(fmt : SimpleDateFormat)(t : String) = {
     val cal = Calendar.getInstance(Locale.US)
-    cal.setTime(timeParser.parse(t))
+    cal.setTime(fmt.parse(t))
     cal
   }
 
-  def makeDate(t: String) = {
-    val cal = Calendar.getInstance(Locale.US)
-    cal.setTime(dateParser.parse(t))
-    cal
+  val makeTime = parse(timeParser) _
+  val makeDate = parse(dateParser) _
+  val makeDateTime = parse(dateTimeParser) _
+
+  def makeNow = Calendar.getInstance(Locale.US)
+
+  def findSystem(s: String) = {
+    System.Systems.find(_.name.equals(s)) match {
+      case None => throw new IllegalArgumentException("No such system " + s)
+      case Some(sys) => sys
+    }
   }
 }
