@@ -5,4 +5,45 @@
   <string name="can_i_take">Can I take my bike on</string>
   <string name="at">at</string>
   <string name="question_mark">\?</string>
+  <string name="notes_nyc_subway">You can always take your bike on the subway!
+    \n\nBe considerate: avoid rush hour if you can, use the ends of the cars, and see <a href="http://mta.info/nyct/safety/bike/index.html">the MTA\'s page</a> for more advice.
+  </string>
+
+  <string name="notes_nyc_bus">Sorry, except for folding bikes, bikes are not allowed on NYC buses.
+  </string>
+
+  <string name="notes_amtrak">Bikes may be checked on trains offering checked baggage service (no trains on the Northeast Corridor service do). Otherwise, only folding bikes are allowed. Read <a href="http://transalt.org/files/resources/amtrak_policy_07.pdf">Amtrak\'s policy</a>.
+  </string>
+
+  <string name="notes_path">Folding bikes are allowed at all times; other bikes are forbidden on weekdays between 6:30&#xa0;AM and 9:30&#xa0;AM and between 3:30&#xa0;PM and 6:30&#xa0;PM. Two bikes are allowed in each car, except that no bikes are allowed in the first car of a train.
+    \n\nFor further information and rules, see <a href="http://www.panynj.gov/path/bicycles.html">PATH\'s website</a>.
+  </string>
+
+  <string name="notes_metro_north">To bring any bike (except a folding bike) on the train, you must first obtain a <a href="http://www.mta.info/mnr/html/mnrbikepermit.htm"><abbr title="Metro-North Railroad">MNR</abbr> Bicycle Permit</a>.
+    \n\nBikes are forbidden on peak-hour trains and on certain holidays. At other times, two bikes are allowed in each of two cars on each train. Even when bikes are generally allowed, it is at the discretion of the train crew.
+    \n\nThere are a number of additional rues and considerations; see <a href="http://www.mta.info/mnr/html/getaways/bikerule.htm"><abbr>MNR</abbr>\'s website</a> for more details.
+    \n\nNote that for the Port Jervis and Pascack Valley lines, you should use the NJ Transit rules instead.
+  </string>
+  <string name="metro_north_maybe">Some trains at this time allow bicycles, while others do not; consult your line\'s schedule for details.</string>
+
+  <string name="notes_long_island_rail_road">To bring any bike (except a folding bike) on the train, you must obtain a <a href="http://www.mta.info/lirr/about/Bicycles/BicyclePermit.htm"><abbr title="Long Island Rail Road">LIRR</abbr> Bicycle Permit</a> either in advance or on board.
+    \n\nBikes are forbidden on peak-hour trains and on certain holidays. At other times on weekdays, four bikes are allowed on each train, two in each of the first and the last car; at non-peak times on weekends, one bike is allowed in each car, up to a total of eight per train.
+    \n\nBikes are also forbidden during track work and special events.
+    \n\nThere are a number of additional rules and considerations; see <a href="http://www.mta.info/lirr/about/Bicycles/">the <abbr>LIRR</abbr>\'s website</a> for more details.
+  </string>
+  <string name="maybe_long_island_rail_road">At this time, bikes are forbidden on the Montauk branch (except for special Bike Trains) but allowed on all other lines.</string>
+
+  <string name="notes_nj_transit_trains">Bikes are always allowed on the Atlantic City line; on other lines, folding bikes are always allowed, while other bikes are allowed except during weekday rush hour, certain holidays, and the day before major holidays.
+    \n\nTwo bikes are allowed in each car, though priority is given to people with disabilities who need the same space. Tiedowns are recommended but not required.
+    \n\nSee <a href="http://www.njtransit.com/rg/rg_servlet.srv?hdnPageAction=BikeProgramTo">NJ Transit\'s page</a> for more information.
+  </string>
+
+  <string name="notes_nj_transit_buses">About half the NJ Transit bus fleet is “bike-friendly,” with either bike racks on the front or luggage compartments underneath. Bikes are permitted at all times on these buses and forbidden at all times on other buses.
+    \n\nSee <a href="http://www.njtransit.com/rg/rg_servlet.srv?hdnPageAction=BikeProgramTo">NJ Transit\'s page</a> for more information.
+  </string>
+
+  <string name="notes_staten_island_ferry">You can always take your bike on the Staten Island Ferry!
+    \n\nYou must board on the lower level, dismount and walk your bike through the waiting area and boat, and store your bike in the designated area.
+    \n\nFor further information, see the Staten Island Ferry <a href="http://www.nyc.gov/html/dot/html/ferrybus/statfery.shtml#conduct">Passenger Rules of Conduct</a> and the additional <a href="http://www.nyc.gov/html/dot/html/bicyclists/bikesafety.shtml#si">Rules for Bicyclists</a>.
+  </string>
 </resources>

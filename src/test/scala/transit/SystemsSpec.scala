@@ -25,6 +25,7 @@ class SystemsSpec extends Specification { def is =
                                                              endp^
   // the simplest nontrivial system
   "PATH"                                                     ^ setSystem ^
+    "slug is ${path}"                                        ^ checkSlug ^
     "Saturday morning, ${March 26, 2011 7:30 AM}: ${Yes}"    ^ checkResult ^
     "Tuesday morning, ${March 22, 2011 7:30 AM}: ${No}"      ^ checkResult ^
     "${March 22, 2011 10:30 AM}: ${Yes}"                     ^ checkResult ^
@@ -33,6 +34,7 @@ class SystemsSpec extends Specification { def is =
     "Memorial Day, ${May 30, 2011 7:30 AM}: ${Yes}"          ^ checkResult ^
                                                              endp^
   "Metro-North"                                              ^ setSystem ^
+    "slug is ${metro_north}"                                 ^ checkSlug ^
     "${Mar 29, 2011 12:00 PM} mid-day"                       ^ checkSystem("Yes") ^
     "${Mar 29, 2011 6:00 PM} PM rush"                        ^ checkSystem(ONLY_INBOUND) ^
     "${Mar 29, 2011 8:12 PM}"                                ^ checkSystem("inbound ok; maybe outbound") ^
@@ -54,6 +56,7 @@ class SystemsSpec extends Specification { def is =
                                                              endp^
   "${Long Island Railroad} is NOT the right spelling"        ! misspelled ^
   "Long Island Rail Road"                                    ^ setSystem ^
+    "slug is ${long_island_rail_road}"                       ^ checkSlug ^
     "${Mar 29, 2011 12:00 PM} mid-day"                       ^ checkSystem("Yes") ^
     "${Mar 29, 2011 6:30 AM} am rush"                        ^ checkSystem(ONLY_OUTBOUND) ^
     "${Mar 29, 2011 8:00 AM} am rush"                        ^ checkSystem(ONLY_OUTBOUND) ^
@@ -90,6 +93,10 @@ class SystemsSpec extends Specification { def is =
 
   object setSystem extends Given[System] {
     def extract(text: String) = findSystem(text)
+  }
+
+  object checkSlug extends Then[System] {
+    def extract(sys: System, text: String) = sys.slug must_== extract1(text)
   }
 
   object checkResult extends Then[System] {

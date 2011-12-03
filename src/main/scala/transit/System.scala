@@ -152,6 +152,10 @@ abstract class System(val name : String, val icon : Symbol, funs : ((Calendar, D
     }
   }
 
+  def summarize(date: Calendar) : String = summarize(allDirections(date))
+
+  def slug = name.toLowerCase.replaceAll("[^a-z0-9]+", "_")
+
   override def toString = name
 }
 

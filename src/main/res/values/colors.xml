@@ -14,4 +14,5 @@
   <color name="purple">#ff680148</color>
   <color name="black">#ff000000</color>
   <color name="darkgrey">#ff111111</color>
+  <color name="semitransparent_white">#99ffffff</color>
 </resources>
