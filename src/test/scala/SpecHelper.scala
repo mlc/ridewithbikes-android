@@ -30,9 +30,9 @@ object SpecHelper {
     cal
   }
 
-  val makeTime = parse(timeParser) _
-  val makeDate = parse(dateParser) _
-  val makeDateTime = parse(dateTimeParser) _
+  def makeTime(s : String) = parse(timeParser)(s)
+  def makeDate(s : String) = parse(dateParser)(s)
+  def makeDateTime(s : String) = parse(dateTimeParser)(s)
 
   def makeNow = Calendar.getInstance(Locale.US)
 
