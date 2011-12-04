@@ -42,10 +42,10 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val resultPane = findView(TR.result_pane)
   lazy val systemAdapter = new SystemAdapter(this)
 
-  var chosenTime : Calendar = null
+  val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
 
-  override def onCreate(savedInstanceState: Bundle) {
-    super.onCreate(savedInstanceState)
+  override def onCreate(icicle: Bundle) {
+    super.onCreate(icicle)
     setContentView(TR.layout.main)
 
     mainTitle.setTypeface(junction)
@@ -58,9 +58,20 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     timeButton.setOnClickListener({showDialog(BikeActivity.SET_TIME_REQUEST)})
   }
 
+
+  override def onRestoreInstanceState(icicle: Bundle) {
+    super.onRestoreInstanceState(icicle)
+    if (icicle.containsKey("chosenTime"))
+      chosenTime.setTimeInMillis(icicle.getLong("chosenTime"))
+  }
+
+  override def onSaveInstanceState(icicle: Bundle) {
+    super.onSaveInstanceState(icicle)
+    icicle.putLong("chosenTime", chosenTime.getTimeInMillis)
+  }
+
   override def onResume() {
     super.onResume()
-    chosenTime = Calendar.getInstance(newYork, Locale.US)
     updateButtons()
   }
 
