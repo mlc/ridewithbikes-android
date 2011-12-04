@@ -38,6 +38,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val dateButton = findView(TR.date_button)
   lazy val timeButton = findView(TR.time_button)
   lazy val resultText = findView(TR.result_text)
+  lazy val resultMaybe = findView(TR.result_maybe)
   lazy val resultDetails = findView(TR.result_details)
   lazy val resultPane = findView(TR.result_pane)
   lazy val systemAdapter = new SystemAdapter(this)
@@ -94,12 +95,31 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     getResources.getIdentifier("notes_" + sys.slug, "string", "com.ridewithbikes")
   }
 
+  private def getMaybeText(sys: System, result: String) = {
+    if (result.contains("MAYBE"))
+      getResources.getIdentifier("maybe_" + sys.slug, "string", "com.ridewithbikes") match {
+        case 0 => None
+        case id => Some(getText(id))
+      }
+    else
+      None
+  }
+
   private def calculateResult() {
     systemSpinner.getSelectedItem match {
       case sys : System =>
-        resultText setText sys.summarize(chosenTime).toUpperCase
+        val result = sys.summarize(chosenTime).toUpperCase
+        resultText setText result
         resultPane setVisibility View.VISIBLE
         resultDetails setText getDetailsId(sys)
+        getMaybeText(sys, result) match {
+          case None => resultMaybe setVisibility View.GONE
+          case Some(text) => {
+            resultMaybe setText text
+            resultMaybe setVisibility View.VISIBLE
+          }
+        }
+
       case _ => resultPane setVisibility View.GONE
     }
   }

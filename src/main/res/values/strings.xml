@@ -24,7 +24,7 @@
     \n\nThere are a number of additional rues and considerations; see <a href="http://www.mta.info/mnr/html/getaways/bikerule.htm"><abbr>MNR</abbr>\'s website</a> for more details.
     \n\nNote that for the Port Jervis and Pascack Valley lines, you should use the NJ Transit rules instead.
   </string>
-  <string name="metro_north_maybe">Some trains at this time allow bicycles, while others do not; consult your line\'s schedule for details.</string>
+  <string name="maybe_metro_north">Some trains at this time allow bicycles, while others do not; consult your line\'s schedule for details.</string>
 
   <string name="notes_long_island_rail_road">To bring any bike (except a folding bike) on the train, you must obtain a <a href="http://www.mta.info/lirr/about/Bicycles/BicyclePermit.htm"><abbr title="Long Island Rail Road">LIRR</abbr> Bicycle Permit</a> either in advance or on board.
     \n\nBikes are forbidden on peak-hour trains and on certain holidays. At other times on weekdays, four bikes are allowed on each train, two in each of the first and the last car; at non-peak times on weekends, one bike is allowed in each car, up to a total of eight per train.

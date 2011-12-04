@@ -81,6 +81,10 @@
                 android:textSize="24dp"
                 android:textColor="@color/purple"
                 android:paddingBottom="8dp"/>
+      <TextView android:id="@+id/result_maybe"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"/>
       <TextView android:id="@+id/result_details"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
