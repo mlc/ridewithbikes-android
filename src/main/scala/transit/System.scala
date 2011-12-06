@@ -135,18 +135,21 @@ abstract class System(val name : String, val icon : Symbol, funs : ((Calendar, D
   def summarize(results : List[Result]) = {
     // um. too magical?
     val groups = (directions zip results) groupBy (_._2) map {case (a,b) => (a,b map {_._1})}
+
+    def commaed(r: Result) = groups(r).mkString(", ")
+
     groups.size match {
       case 0 => throw new IllegalArgumentException("wtf?")
       case 1 => groups.head._1.toString
       case _ => {
         if (groups.contains(Maybe)) {
           if (groups.contains(Yes)) {
-            groups(Yes).mkString(", ") + " ok; maybe " + groups(Maybe).mkString(", ")
+            commaed(Yes) + " ok; maybe " + commaed(Maybe)
           } else {
-            "maybe " + groups(Maybe).mkString(", ") + "; " + groups(No).mkString(", ") + " not ok"
+            "maybe " + commaed(Maybe) + "; " + commaed(No) + " not ok"
           }
         } else {
-          groups(Yes).mkString(", ") + " ok, but not " + groups(No).mkString(", ")
+          commaed(Yes) + " ok, but not " + commaed(No)
         }
       }
     }
