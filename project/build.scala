@@ -7,6 +7,7 @@ object General {
   val settings = Defaults.defaultSettings ++ Seq (
     name := "Ride with Bikes",
     version := "0.1",
+    versionCode := 1,
     scalaVersion := "2.9.1",
     platformName in Android := "android-7"
   )
@@ -15,7 +16,8 @@ object General {
     General.settings ++
     AndroidProject.androidSettings ++
     TypedResources.settings ++
-    AndroidMarketPublish.settings ++ Seq (
+    AndroidMarketPublish.settings ++
+    AndroidManifestGenerator.settings ++ Seq (
       keyalias in Android := "change-me",
       libraryDependencies += "com.github.jbrechtel" %% "robospecs" % "0.2-SNAPSHOT" % "test"
     )
