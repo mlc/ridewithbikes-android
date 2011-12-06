@@ -155,22 +155,23 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
     systemSpinner.getSelectedItem match {
       case sys : System =>
+        resultPane setVisibility View.VISIBLE
+        resultDetails setText getDetailsId(sys)
+
         if (allDay) {
           resultText setVisibility View.GONE
-          resultPane setVisibility View.VISIBLE
           if (sys.directions.length > 1)
             fullDayTable.addView(makeHeader(sys.directions))
           for (entry <- sys.friendly_table(chosenTime))
             fullDayTable.addView(makeRow(entry))
           fullDayTable setStretchAllColumns true
           fullDayTable setVisibility View.VISIBLE
+          resultMaybe setVisibility View.GONE // hm?
         } else {
           val result = sys.summarize(chosenTime).toUpperCase
           fullDayTable setVisibility View.GONE
           resultText setVisibility View.VISIBLE
           resultText setText result
-          resultPane setVisibility View.VISIBLE
-          resultDetails setText getDetailsId(sys)
           getMaybeText(sys, result) match {
             case None => resultMaybe setVisibility View.GONE
             case Some(text) => {
