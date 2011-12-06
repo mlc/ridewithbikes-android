@@ -19,7 +19,7 @@ import java.util.{TimeZone, Locale, Calendar}
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
-import android.app.{TimePickerDialog, DatePickerDialog, Activity}
+import android.app.Activity
 
 object BikeActivity {
   val SET_DATE_REQUEST = 1
@@ -44,6 +44,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val systemAdapter = new SystemAdapter(this)
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
+  private var allDay = false
 
   override def onCreate(icicle: Bundle) {
     super.onCreate(icicle)
@@ -52,7 +53,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     mainTitle.setTypeface(junction)
     resultText.setTypeface(junction)
     systemSpinner.setAdapter(systemAdapter)
-    systemSpinner.setOnItemSelectedListener({calculateResult})
+    systemSpinner.setOnItemSelectedListener({calculateResult()})
     makeClickable(resultDetails)
 
     dateButton.setOnClickListener({showDialog(BikeActivity.SET_DATE_REQUEST)})
@@ -64,11 +65,14 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     super.onRestoreInstanceState(icicle)
     if (icicle.containsKey("chosenTime"))
       chosenTime.setTimeInMillis(icicle.getLong("chosenTime"))
+    if (icicle.containsKey("allDay"))
+      allDay = icicle.getBoolean("allDay")
   }
 
   override def onSaveInstanceState(icicle: Bundle) {
     super.onSaveInstanceState(icicle)
     icicle.putLong("chosenTime", chosenTime.getTimeInMillis)
+    icicle.putBoolean("allDay", allDay)
   }
 
   override def onResume() {
@@ -80,27 +84,32 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     case BikeActivity.SET_DATE_REQUEST =>
       new DateWheelDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
     case BikeActivity.SET_TIME_REQUEST =>
-      new TimePickerDialog(this, setTime _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
+      new TimeWheelDialog(this, setTime _, setAllDay _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
     case _ => null
   }
 
   private def updateButtons() {
     val d = chosenTime.getTime
-    Log.d("BikeActivity", d.toString)
+//    Log.d("BikeActivity", d.toString)
+//    Log.d("BikeActivity", allDay.toString)
     dateButton setText dateFormat.format(d)
-    timeButton setText timeFormat.format(d)
+    timeButton setText (if (allDay) getString(R.string.all_day) else timeFormat.format(d))
   }
 
   private def getDetailsId(sys: System) = {
     getResources.getIdentifier("notes_" + sys.slug, "string", "com.ridewithbikes")
   }
 
-  private def getMaybeText(sys: System, result: String) = {
+  private def getMaybeText(sys: System): Option[CharSequence] = {
+    getResources.getIdentifier("maybe_" + sys.slug, "string", "com.ridewithbikes") match {
+      case 0 => None
+      case id => Some(getText(id))
+    }
+  }
+
+  private def getMaybeText(sys: System, result: String): Option[CharSequence] = {
     if (result.contains("MAYBE"))
-      getResources.getIdentifier("maybe_" + sys.slug, "string", "com.ridewithbikes") match {
-        case 0 => None
-        case id => Some(getText(id))
-      }
+      getMaybeText(sys)
     else
       None
   }
@@ -125,6 +134,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   }
 
   private def setTime(hourOfDay: Int, minute: Int) {
+    allDay = false
     chosenTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
     chosenTime.set(Calendar.MINUTE, minute)
     updateButtons()
@@ -135,6 +145,12 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     chosenTime.set(Calendar.YEAR, year)
     chosenTime.set(Calendar.MONTH, monthOfYear)
     chosenTime.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+    updateButtons()
+    calculateResult()
+  }
+
+  private def setAllDay() {
+    allDay = true
     updateButtons()
     calculateResult()
   }

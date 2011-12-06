@@ -6,6 +6,7 @@
   <string name="at">at</string>
   <string name="question_mark">\?</string>
   <string name="set">Set</string>
+  <string name="all_day">All Day</string>
 
   <string name="notes_nyc_subway">You can always take your bike on the subway!
     \n\nBe considerate: avoid rush hour if you can, use the ends of the cars, and see <a href="http://mta.info/nyct/safety/bike/index.html">the MTA\'s page</a> for more advice.
