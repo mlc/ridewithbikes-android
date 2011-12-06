@@ -31,7 +31,7 @@ case class CalendarWrapper(cal : Calendar) {
   def isWeekday = !isWeekend
   def atHourMinute(h : Int, m : Int) = {
     val instance = cal.clone.asInstanceOf[Calendar]
-    instance.set(Calendar.HOUR, h)
+    instance.set(Calendar.HOUR_OF_DAY, h)
     instance.set(Calendar.MINUTE, m)
     instance.set(Calendar.SECOND, 0)
     instance
