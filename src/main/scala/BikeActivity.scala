@@ -13,13 +13,14 @@ package com.ridewithbikes
 import android.graphics.Typeface
 import android.os.Bundle
 import Implicits._
+import transit.{Result, Direction, System}
 import TypedResource._
-import transit.System
 import java.util.{TimeZone, Locale, Calendar}
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.View
 import android.app.Activity
+import android.widget.{TextView, TableRow}
+import android.view.{Gravity, View}
 
 object BikeActivity {
   val SET_DATE_REQUEST = 1
@@ -41,6 +42,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val resultMaybe = findView(TR.result_maybe)
   lazy val resultDetails = findView(TR.result_details)
   lazy val resultPane = findView(TR.result_pane)
+  lazy val fullDayTable = findView(TR.full_day_table)
   lazy val systemAdapter = new SystemAdapter(this)
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
@@ -114,18 +116,67 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
       None
   }
 
+  private def viewWithText(txt: String) = {
+    val tv = new TextView(this)
+    tv setGravity Gravity.CENTER_HORIZONTAL
+    tv setText txt
+    tv
+  }
+
+  private def embolden(tv: TextView) = {
+    tv.setTypeface(Typeface.DEFAULT_BOLD)
+    tv
+  }
+
+  private def makeHeader(dirs: List[Direction.Direction]) = {
+    val tr = new TableRow(this)
+    tr.addView(new View(this))
+    for (dir <- dirs) {
+      tr.addView(embolden(viewWithText(dir.toString)))
+    }
+
+    tr
+  }
+
+  private def makeRow(row: (Calendar, Calendar, List[Result.Result])) = {
+    val tr = new TableRow(this)
+    val (start, end, results) = row
+
+    tr.addView(viewWithText(timeFormat.format(start.getTime) + " \u2013 " + timeFormat.format(end.getTime)))
+    for (result <- results) {
+      tr.addView(viewWithText(result.toString))
+    }
+
+    tr
+  }
+
   private def calculateResult() {
+    fullDayTable.removeAllViews()
+
     systemSpinner.getSelectedItem match {
       case sys : System =>
-        val result = sys.summarize(chosenTime).toUpperCase
-        resultText setText result
-        resultPane setVisibility View.VISIBLE
-        resultDetails setText getDetailsId(sys)
-        getMaybeText(sys, result) match {
-          case None => resultMaybe setVisibility View.GONE
-          case Some(text) => {
-            resultMaybe setText text
-            resultMaybe setVisibility View.VISIBLE
+        if (allDay) {
+          resultText setVisibility View.GONE
+          resultPane setVisibility View.VISIBLE
+          if (sys.directions.length > 1)
+            fullDayTable.addView(makeHeader(sys.directions))
+          for (entry <- sys.friendly_table(chosenTime))
+            fullDayTable.addView(makeRow(entry))
+          fullDayTable setStretchAllColumns true
+          fullDayTable setVisibility View.VISIBLE
+        } else {
+          val result = sys.summarize(chosenTime).toUpperCase
+          fullDayTable setVisibility View.GONE
+          resultText setVisibility View.VISIBLE
+          resultText setText result
+          resultPane setVisibility View.VISIBLE
+          resultDetails setText getDetailsId(sys)
+          getMaybeText(sys, result) match {
+            case None => resultMaybe setVisibility View.GONE
+            case Some(text) => {
+              resultMaybe setText text
+              resultMaybe setVisibility View.VISIBLE
+            }
           }
         }
 
