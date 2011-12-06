@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.widget.{TimePicker, DatePicker, AdapterView}
+import kankan.wheel.widget.{WheelView, OnWheelChangedListener}
 
 object Implicits {
   implicit def funToClickListener(f: => Any) = new View.OnClickListener {
@@ -36,5 +37,14 @@ object Implicits {
   }
   implicit def funToOnTimeSetListener(f: (Int, Int) => Any) = new OnTimeSetListener {
     def onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) { f(hourOfDay, minute) }
+  }
+  implicit def funToWheelChangedListener(f: => Any) = new OnWheelChangedListener {
+    def onChanged(wheel: WheelView, oldValue: Int, newValue: Int) { f }
+  }
+  implicit def funToWheelChangedListener(f: WheelView => Any) = new OnWheelChangedListener {
+    def onChanged(wheel: WheelView, oldValue: Int, newValue: Int) { f(wheel) }
+  }
+  implicit def funToWheelChangedListener(f: (WheelView, Int, Int) => Any) = new OnWheelChangedListener {
+    def onChanged(wheel: WheelView, oldValue: Int, newValue: Int) { f(wheel, oldValue, newValue) }
   }
 }

@@ -78,7 +78,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   override def onCreateDialog(id: Int) = id match {
     case BikeActivity.SET_DATE_REQUEST =>
-      new DatePickerDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
+      new DateWheelDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
     case BikeActivity.SET_TIME_REQUEST =>
       new TimePickerDialog(this, setTime _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
     case _ => null
