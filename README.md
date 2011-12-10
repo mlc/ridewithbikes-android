@@ -5,8 +5,8 @@ This is a port of [Ride with Bikes] to the Android platform.
 
 The code is written in scala. To compile, make sure you have a copy of [sbt]
 — version 0.11 has been tested — and of the [Android SDK]. Then, set your
-`ANDROID_SDK` enviroment variable to point to the Android SDK as installed,
- and do
+`ANDROID_SDK_HOME` environment variable to point to the Android SDK as
+installed, and do
 
     sbt android:package-debug
 
