@@ -23,8 +23,8 @@ import android.widget.{TextView, TableRow}
 import android.view.{Gravity, View}
 
 object BikeActivity {
-  val SET_DATE_REQUEST = 1
-  val SET_TIME_REQUEST = 2
+  final val SET_DATE_REQUEST = 1
+  final val SET_TIME_REQUEST = 2
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
