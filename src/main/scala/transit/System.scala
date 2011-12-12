@@ -24,6 +24,8 @@ object Direction extends Enumeration {
 import Direction._
 
 object System {
+  final val TABLE_GRANULARITY = 15 // minutes
+  
   protected def checker(result : Result)(condition : Condition, fdir : Direction = null)(date : Calendar, direction : Direction) = {
     if ((fdir == null || direction == fdir) && condition(date))
       result
@@ -96,7 +98,7 @@ object System {
       case Nil => ()
       case (head :: tail) =>
         val (matches, rest) = t span (p => p._2 == head._2)
-        builder += ((head._1, matches.last._1, head._2))
+        builder += ((head._1, matches.last._1 + TABLE_GRANULARITY.minutes, head._2))
         build(rest)
       }
     }
@@ -122,7 +124,7 @@ abstract class System(val name : String, val icon : Symbol, funs : ((Calendar, D
   def allDirections(date: Calendar) = directions map (apply(date, _))
 
   def table(date: Calendar) = {
-    val times = (0 to 24*60 by 15) map (date.atMinutesPastMidnight(_))
+    val times = (0 until 24*60 by System.TABLE_GRANULARITY) map (date.atMinutesPastMidnight(_))
     val results = times map allDirections
     (times zip results).toList
   }
