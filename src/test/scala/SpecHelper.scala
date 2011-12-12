@@ -26,7 +26,7 @@ object SpecHelper {
 
   private def parse(fmt : SimpleDateFormat)(t : String) = {
     val cal = Calendar.getInstance(Locale.US)
-    cal.setTime(fmt.parse(t))
+    fmt.synchronized { cal.setTime(fmt.parse(t)) }
     cal
   }
 

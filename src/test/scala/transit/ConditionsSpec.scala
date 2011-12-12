@@ -16,7 +16,6 @@ import java.util.Calendar
 import com.ridewithbikes.SpecHelper._
 
 class ConditionsSpec extends Specification {
-  args(sequential = true)
   "Check conditions".title
 
   "always" should {

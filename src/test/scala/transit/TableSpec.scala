@@ -17,8 +17,6 @@ import Result._
 import collection.immutable.List
 
 class TableSpec extends Specification {
-  args(sequential = true)
-
   "Generate Tables".title
 
   "The Subway" should {
@@ -38,7 +36,7 @@ class TableSpec extends Specification {
 
     "deal with rush hour on weekdays" in {
       val path = findSystem("PATH")
-      val table = path.friendly_table(makeDate("Dec 14, 2011"))
+      val table = path.friendly_table(makeDate("Dec 12, 2011"))
       matchable(table) must_== List(( 0, 00,   6, 30,  List(Yes)),
                                     ( 6, 30,   9, 30,  List(No)),
                                     ( 9, 30,  15, 30,  List(Yes)),
@@ -50,7 +48,7 @@ class TableSpec extends Specification {
   "Metro-North" should {
     "make one hate it" in {
       val mnr = findSystem("Metro-North")
-      val table = mnr.friendly_table(makeDate("Dec 14, 2011"))
+      val table = mnr.friendly_table(makeDate("Dec 12, 2011"))
       matchable(table) must_== List(( 0, 00,   5, 00,  List(Yes, Yes)),
                                     ( 5, 00,   5, 30,  List(No, Yes)),
                                     ( 5, 30,   9, 00,  List(No, Maybe)),
