@@ -20,7 +20,7 @@ import android.text.format.DateFormat
 import android.util.Log
 import android.app.Activity
 import android.widget.{TextView, TableRow}
-import android.view.{Gravity, View}
+import android.view.{ViewGroup, Gravity, View}
 
 object BikeActivity {
   final val SET_DATE_REQUEST = 1
@@ -166,6 +166,10 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
             fullDayTable.addView(makeRow(entry))
           fullDayTable setStretchAllColumns true
           fullDayTable setVisibility View.VISIBLE
+
+          if (fullDayTable.getChildCount == 1)
+            fullDayTable.getChildAt(0).asInstanceOf[ViewGroup].getChildAt(0).asInstanceOf[TextView].setText(R.string.all_day_result)
+
           resultMaybe setVisibility View.GONE // hm?
         } else {
           val result = sys.summarize(chosenTime).toUpperCase
