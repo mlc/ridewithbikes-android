@@ -17,14 +17,17 @@ import transit.{Result, Direction, System}
 import TypedResource._
 import java.util.{TimeZone, Locale, Calendar}
 import android.text.format.DateFormat
-import android.app.Activity
 import android.widget.{TextView, TableRow}
 import android.view._
 import android.content.Intent
+import android.app.{AlertDialog, Activity}
+import android.text.SpannableStringBuilder
+import java.io.{InputStreamReader, BufferedReader}
 
 object BikeActivity {
-  final val SET_DATE_REQUEST = 1
-  final val SET_TIME_REQUEST = 2
+  final val SET_DATE_DIALOG = 1
+  final val SET_TIME_DIALOG = 2
+  final val ABOUT_DIALOG = 3
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
@@ -46,6 +49,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val systemAdapter = new SystemAdapter(this)
 
   lazy val aboutIntent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG")
+  lazy val selfPackageInfo = getPackageManager.getPackageInfo(getPackageName, 0)
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
   private var allDay = false
@@ -60,8 +64,8 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     systemSpinner.setOnItemSelectedListener({calculateResult()})
     makeClickable(resultDetails)
 
-    dateButton.setOnClickListener({showDialog(BikeActivity.SET_DATE_REQUEST)})
-    timeButton.setOnClickListener({showDialog(BikeActivity.SET_TIME_REQUEST)})
+    dateButton.setOnClickListener({showDialog(BikeActivity.SET_DATE_DIALOG)})
+    timeButton.setOnClickListener({showDialog(BikeActivity.SET_TIME_DIALOG)})
   }
 
 
@@ -85,13 +89,33 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   }
 
   override def onCreateDialog(id: Int) = id match {
-    case BikeActivity.SET_DATE_REQUEST =>
+    case BikeActivity.SET_DATE_DIALOG =>
       new DateWheelDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
-    case BikeActivity.SET_TIME_REQUEST =>
+    case BikeActivity.SET_TIME_DIALOG =>
       new TimeWheelDialog(this, setTime _, setAllDay _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
+    case BikeActivity.ABOUT_DIALOG =>
+      val message = new SpannableStringBuilder()
+        .append(getText(R.string.about_comments)).append("\n\n")
+        .append(getLicense)
+      new AlertDialog.Builder(this)
+        .setTitle(getString(selfPackageInfo.applicationInfo.labelRes) + " " + selfPackageInfo.versionName)
+        .setIcon(R.drawable.icon)
+        .setMessage(message)
+        .setPositiveButton(android.R.string.ok, {})
+        .create()
     case _ => null
   }
+  
+  private def getLicense : CharSequence = {
+    val builder = new StringBuilder
+    val stream = new BufferedReader(new InputStreamReader(getResources.openRawResource(R.raw.about_license)))
+    Stream.continually(stream.readLine).takeWhile(_ != null) foreach { _ match {
+      case "" => builder.append("\n\n")
+      case line => builder.append(line).append(' ')
+    } }
 
+    builder
+  }
 
   override def onCreateOptionsMenu(menu: Menu) = {
     val inflater = getMenuInflater
@@ -99,13 +123,19 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     true
   }
 
-  override def onPrepareOptionsMenu(menu: Menu) = {
-    menu.findItem(R.id.about_menu).setVisible(!getPackageManager.queryIntentActivities(aboutIntent, 0).isEmpty)
-    true
+  private def haveOiAbout: Boolean = {
+    !getPackageManager.queryIntentActivities(aboutIntent, 0).isEmpty
   }
 
   override def onOptionsItemSelected(item: MenuItem) = item.getItemId match {
-    case R.id.about_menu => startActivityForResult(aboutIntent, 101); true
+    case R.id.about_menu =>
+      if (haveOiAbout)
+        startActivityForResult(aboutIntent, 101)
+      else
+        showDialog(BikeActivity.ABOUT_DIALOG)
+
+      true
+
     case _ => super.onOptionsItemSelected(item)
   }
 
