@@ -1,0 +1,18 @@
+Copyright © 2011 Michael Castleman.
+
+This program is free software. It comes without any warranty, to
+the extent permitted by applicable law. You can redistribute it
+and/or modify it under the terms of the Do What The Fuck You Want
+To Public License, Version 2, as published by Sam Hocevar. See
+http://sam.zoy.org/wtfpl/COPYING for more details.
+
+* * * * *
+
+Some of the libraries and assets used by this project are by other authors and
+are under other licenses:
+
+android-wheel is Copyright 2011 Yuri Kanivets and distributed under the
+Apache License, Version 2.0.
+
+Junction is Copyright 2010 Caroline Hadilaksono and distributed under the
+Open Font License, Version 1.1.

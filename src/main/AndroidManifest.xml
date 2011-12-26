@@ -1,6 +1,12 @@
 <manifest package="com.ridewithbikes" xmlns:android="http://schemas.android.com/apk/res/android">
   <uses-sdk android:minSdkVersion="7"/>
   <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/Theme">
+    <meta-data android:name="org.openintents.metadata.COPYRIGHT" android:resource="@string/about_copyright"/>
+    <meta-data android:name="org.openintents.metadata.COMMENTS" android:resource="@string/about_comments"/>
+    <meta-data android:name="org.openintents.metadata.WEBSITE_URL" android:resource="@string/about_web_url"/>
+    <meta-data android:name="org.openintents.metadata.WEBSITE_LABEL" android:resource="@string/about_web_title"/>
+    <meta-data android:name="org.openintents.metadata.AUTHORS" android:resource="@array/about_authors"/>
+    <meta-data android:name="org.openintents.metadata.LICENSE" android:resource="@raw/about_license"/>
     <activity android:label="@string/app_name" android:name=".BikeActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

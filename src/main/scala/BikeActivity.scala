@@ -17,10 +17,10 @@ import transit.{Result, Direction, System}
 import TypedResource._
 import java.util.{TimeZone, Locale, Calendar}
 import android.text.format.DateFormat
-import android.util.Log
 import android.app.Activity
 import android.widget.{TextView, TableRow}
-import android.view.{ViewGroup, Gravity, View}
+import android.view._
+import android.content.Intent
 
 object BikeActivity {
   final val SET_DATE_REQUEST = 1
@@ -44,6 +44,8 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val resultPane = findView(TR.result_pane)
   lazy val fullDayTable = findView(TR.full_day_table)
   lazy val systemAdapter = new SystemAdapter(this)
+
+  lazy val aboutIntent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG")
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
   private var allDay = false
@@ -90,6 +92,23 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     case _ => null
   }
 
+
+  override def onCreateOptionsMenu(menu: Menu) = {
+    val inflater = getMenuInflater
+    inflater.inflate(R.menu.main_menu, menu)
+    true
+  }
+
+  override def onPrepareOptionsMenu(menu: Menu) = {
+    menu.findItem(R.id.about_menu).setVisible(!getPackageManager.queryIntentActivities(aboutIntent, 0).isEmpty)
+    true
+  }
+
+  override def onOptionsItemSelected(item: MenuItem) = item.getItemId match {
+    case R.id.about_menu => startActivityForResult(aboutIntent, 101); true
+    case _ => super.onOptionsItemSelected(item)
+  }
+
   private def updateButtons() {
     val d = chosenTime.getTime
 //    Log.d("BikeActivity", d.toString)
@@ -116,7 +135,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
       None
   }
 
-  private def viewWithText(txt: String) = {
+  private def viewWithText(txt: CharSequence) = {
     val tv = new TextView(this)
     tv setGravity Gravity.CENTER_HORIZONTAL
     tv setText txt
