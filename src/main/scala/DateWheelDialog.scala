@@ -50,7 +50,7 @@ class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
   def dayOfMonth_=(day: Int) { dayWheel.setCurrentItem(day - 1) }
 
   def onClick(dlg: DialogInterface, which: Int) {
-    if (callback != null)
+    if (callback != null && which == DialogInterface.BUTTON_POSITIVE)
       callback.onDateSet(null, year, monthOfYear, dayOfMonth)
   }
 

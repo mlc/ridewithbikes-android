@@ -66,6 +66,7 @@ class TimeWheelDialog(val ctx: Context, val callback: OnTimeSetListener, val all
       callback.onTimeSet(null, hourOfDay, minute)
     case DialogInterface.BUTTON_NEUTRAL => if (callback != null)
       alldayCallback()
+    case _ => ()
     }
   }
 
