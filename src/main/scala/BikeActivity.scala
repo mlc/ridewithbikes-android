@@ -23,6 +23,7 @@ import android.content.Intent
 import android.app.{AlertDialog, Activity}
 import android.text.SpannableStringBuilder
 import java.io.{InputStreamReader, BufferedReader}
+import io.BufferedSource
 
 object BikeActivity {
   final val SET_DATE_DIALOG = 1
@@ -108,8 +109,8 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   
   private def getLicense : CharSequence = {
     val builder = new StringBuilder
-    val stream = new BufferedReader(new InputStreamReader(getResources.openRawResource(R.raw.about_license)))
-    Stream.continually(stream.readLine).takeWhile(_ != null) foreach { _ match {
+    val stream = getResources.openRawResource(R.raw.about_license)
+    new BufferedSource(stream).getLines() foreach { _ match {
       case "" => builder.append("\n\n")
       case line => builder.append(line).append(' ')
     } }
