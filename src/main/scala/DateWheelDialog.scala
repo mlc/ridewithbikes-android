@@ -23,6 +23,7 @@ import android.os.Bundle
 
 class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
   extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener {
+
   lazy val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
   lazy val view = inflater.inflate(R.layout.date_wheel, null)
   lazy val monthWheel = view.findView(TR.month_wheel)
@@ -49,6 +50,19 @@ class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
   def year_=(year: Int) { yearWheel.setCurrentItem(year - 1900) }
   def monthOfYear_=(month: Int) { monthWheel.setCurrentItem(month) }
   def dayOfMonth_=(day: Int) { dayWheel.setCurrentItem(day - 1) }
+  def date: Calendar = {
+    val c = Calendar.getInstance()
+    c.set(Calendar.YEAR, year)
+    c.set(Calendar.MONTH, monthOfYear)
+    c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+    c
+  }
+  def date_=(cal: Calendar) {
+    year = cal.get(Calendar.YEAR)
+    monthOfYear = cal.get(Calendar.MONTH)
+    dayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
+    updateTitle()
+  }
 
   override def onSaveInstanceState() = {
     val icicle = super.onSaveInstanceState() match {
@@ -105,5 +119,10 @@ class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
     this.monthOfYear = monthOfYear
     this.dayOfMonth = dayOfMonth
     updateTitle()
+  }
+  
+  def this(ctx: Context,  callback: OnDateSetListener, cal: Calendar) = {
+    this(ctx, callback)
+    this.date = cal
   }
 }

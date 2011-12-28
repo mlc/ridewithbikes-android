@@ -20,11 +20,11 @@ import android.text.format.DateFormat
 import android.widget.{TextView, TableRow}
 import android.view._
 import android.content.Intent
-import android.app.{AlertDialog, Activity}
 import android.text.SpannableStringBuilder
 import io.BufferedSource
 import android.net.Uri
 import android.content.pm.PackageManager
+import android.app.{Dialog, AlertDialog, Activity}
 
 object BikeActivity {
   final val SET_DATE_DIALOG = 1
@@ -114,9 +114,16 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
         .setMessage(message)
         .setPositiveButton(android.R.string.ok, {})
         .create()
-    case _ => null
+    case _ => super.onCreateDialog(id)
   }
-  
+
+
+  override def onPrepareDialog(id: Int, dialog: Dialog) = id match {
+    case BikeActivity.SET_DATE_DIALOG => dialog.asInstanceOf[DateWheelDialog].date = chosenTime
+    case BikeActivity.SET_TIME_DIALOG => dialog.asInstanceOf[TimeWheelDialog].date = chosenTime
+    case _ => super.onPrepareDialog(id, dialog)
+  }
+
   private def getLicense : CharSequence = {
     val builder = new StringBuilder
     val stream = getResources.openRawResource(R.raw.about_license)
