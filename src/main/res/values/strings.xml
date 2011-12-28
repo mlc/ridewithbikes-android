@@ -58,4 +58,5 @@
   <array name="about_authors">
     <item>Mike Castleman</item>
   </array>
+  <string name="flattr_menu">Flattr</string>
 </resources>

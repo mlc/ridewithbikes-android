@@ -20,6 +20,7 @@ import android.view.{View, LayoutInflater}
 import kankan.wheel.widget.adapters.{ArrayWheelAdapter, NumericWheelAdapter}
 import java.util.Calendar
 import android.text.format.DateFormat
+import android.os.Bundle
 
 class TimeWheelDialog(val ctx: Context, val callback: OnTimeSetListener, val alldayCallback: () => Any, val is24HourView: Boolean)
   extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener {
@@ -59,6 +60,28 @@ class TimeWheelDialog(val ctx: Context, val callback: OnTimeSetListener, val all
     }
   }
   def minute_=(minute: Int) { minuteWheel.setCurrentItem(minute) }
+
+  override def onSaveInstanceState() = {
+    val icicle = super.onSaveInstanceState() match {
+      case null => new Bundle()
+      case x => x
+    }
+
+    icicle.putInt("hourOfDay", hourOfDay)
+    icicle.putInt("minute", minute)
+
+    icicle
+  }
+
+  override def onRestoreInstanceState(icicle: Bundle) {
+    super.onRestoreInstanceState(icicle)
+    if (icicle != null) {
+      if (icicle.containsKey("hourOfDay"))
+        hourOfDay = icicle.getInt("hourOfDay")
+      if (icicle.containsKey("minute"))
+        minute = icicle.getInt("minute")
+    }
+  }
 
   def onClick(dlg: DialogInterface, which: Int) {
     which match {

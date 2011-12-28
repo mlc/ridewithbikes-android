@@ -22,13 +22,16 @@ import android.view._
 import android.content.Intent
 import android.app.{AlertDialog, Activity}
 import android.text.SpannableStringBuilder
-import java.io.{InputStreamReader, BufferedReader}
 import io.BufferedSource
+import android.net.Uri
+import android.content.pm.PackageManager
 
 object BikeActivity {
   final val SET_DATE_DIALOG = 1
   final val SET_TIME_DIALOG = 2
   final val ABOUT_DIALOG = 3
+
+  final val FLATTR_THING_ID = "ce83074882a92ef56a1fb154f1406c21"
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
@@ -50,6 +53,13 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val systemAdapter = new SystemAdapter(this)
 
   lazy val aboutIntent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG")
+  lazy val flattrIntent = {
+    val i = new Intent("com.flattr4android.app.DISPLAY_THING")
+    i.putExtra("THING_ID", BikeActivity.FLATTR_THING_ID)
+    i
+  }
+  lazy val flattrWebIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://flattr.com/thing/" + BikeActivity.FLATTR_THING_ID))
+
   lazy val selfPackageInfo = getPackageManager.getPackageInfo(getPackageName, 0)
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
@@ -124,9 +134,11 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     true
   }
 
-  private def haveOiAbout: Boolean = {
-    !getPackageManager.queryIntentActivities(aboutIntent, 0).isEmpty
-  }
+  private def haveIntent(intent: Intent): Boolean =
+    !getPackageManager.queryIntentActivities(intent, 0).isEmpty
+
+  private def haveOiAbout = haveIntent(aboutIntent)
+  private def haveFlattrApp = haveIntent(flattrIntent)
 
   override def onOptionsItemSelected(item: MenuItem) = item.getItemId match {
     case R.id.about_menu =>
@@ -134,6 +146,14 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
         startActivityForResult(aboutIntent, 101)
       else
         showDialog(BikeActivity.ABOUT_DIALOG)
+
+      true
+
+    case R.id.flattr_menu =>
+      if (haveFlattrApp)
+        startActivity(flattrIntent)
+      else
+        startActivity(flattrWebIntent)
 
       true
 

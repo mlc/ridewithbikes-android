@@ -19,6 +19,7 @@ import kankan.wheel.widget.adapters.{ArrayWheelAdapter, NumericWheelAdapter}
 import java.util.Calendar
 import android.view.LayoutInflater
 import java.text.{SimpleDateFormat, DateFormatSymbols}
+import android.os.Bundle
 
 class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
   extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener {
@@ -48,6 +49,32 @@ class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
   def year_=(year: Int) { yearWheel.setCurrentItem(year - 1900) }
   def monthOfYear_=(month: Int) { monthWheel.setCurrentItem(month) }
   def dayOfMonth_=(day: Int) { dayWheel.setCurrentItem(day - 1) }
+
+  override def onSaveInstanceState() = {
+    val icicle = super.onSaveInstanceState() match {
+      case null => new Bundle()
+      case x => x
+    }
+
+    icicle.putInt("year", year)
+    icicle.putInt("monthOfYear", monthOfYear)
+    icicle.putInt("dayOfMonth", dayOfMonth)
+
+    icicle
+  }
+
+  override def onRestoreInstanceState(icicle: Bundle) {
+    super.onRestoreInstanceState(icicle)
+
+    if (icicle != null) {
+      if (icicle.containsKey("year"))
+        year = icicle.getInt("year")
+      if (icicle.containsKey("monthOfYear"))
+        monthOfYear = icicle.getInt("monthOfYear")
+      if (icicle.containsKey("dayOfMonth"))
+        dayOfMonth = icicle.getInt("dayOfMonth")
+    }
+  }
 
   def onClick(dlg: DialogInterface, which: Int) {
     if (callback != null && which == DialogInterface.BUTTON_POSITIVE)
