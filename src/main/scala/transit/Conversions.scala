@@ -58,4 +58,5 @@ class SecondsWrapper(val s : Int) {
   def hour = hours
   def days = s * 86400
   def day = days
+  def to_ms = s * 1000L
 }

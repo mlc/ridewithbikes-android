@@ -23,7 +23,6 @@ import android.content.Intent
 import android.text.SpannableStringBuilder
 import io.BufferedSource
 import android.net.Uri
-import android.content.pm.PackageManager
 import android.app.{Dialog, AlertDialog, Activity}
 
 object BikeActivity {
@@ -32,6 +31,7 @@ object BikeActivity {
   final val ABOUT_DIALOG = 3
 
   final val FLATTR_THING_ID = "ce83074882a92ef56a1fb154f1406c21"
+  final val MAX_SAVE_TIME = 5 * 60 * 1000L
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
@@ -52,7 +52,11 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   lazy val fullDayTable = findView(TR.full_day_table)
   lazy val systemAdapter = new SystemAdapter(this)
 
-  lazy val aboutIntent = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG")
+  lazy val aboutIntent = {
+    val i = new Intent("org.openintents.action.SHOW_ABOUT_DIALOG")
+    i.putExtra("org.openintents.extra.PACKAGE_NAME", getPackageName)
+    i
+  }
   lazy val flattrIntent = {
     val i = new Intent("com.flattr4android.app.DISPLAY_THING")
     i.putExtra("THING_ID", BikeActivity.FLATTR_THING_ID)
@@ -64,6 +68,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
   private var allDay = false
+  private var lastDisappearTime = 0L
 
   override def onCreate(icicle: Bundle) {
     super.onCreate(icicle)
@@ -82,20 +87,31 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   override def onRestoreInstanceState(icicle: Bundle) {
     super.onRestoreInstanceState(icicle)
-    if (icicle.containsKey("chosenTime"))
-      chosenTime.setTimeInMillis(icicle.getLong("chosenTime"))
-    if (icicle.containsKey("allDay"))
-      allDay = icicle.getBoolean("allDay")
+    if (!icicle.containsKey("instanceSaveTime") || (java.lang.System.currentTimeMillis() - icicle.getLong("instanceSaveTime")) < BikeActivity.MAX_SAVE_TIME) {
+      if (icicle.containsKey("chosenTime"))
+        chosenTime.setTimeInMillis(icicle.getLong("chosenTime"))
+      if (icicle.containsKey("allDay"))
+        allDay = icicle.getBoolean("allDay")
+    }
   }
 
   override def onSaveInstanceState(icicle: Bundle) {
     super.onSaveInstanceState(icicle)
     icicle.putLong("chosenTime", chosenTime.getTimeInMillis)
     icicle.putBoolean("allDay", allDay)
+    icicle.putLong("instanceSaveTime", java.lang.System.currentTimeMillis())
+  }
+
+  override def onPause() {
+    super.onPause()
+    lastDisappearTime = java.lang.System.currentTimeMillis()
   }
 
   override def onResume() {
     super.onResume()
+    val now = java.lang.System.currentTimeMillis()
+    if (now - lastDisappearTime > BikeActivity.MAX_SAVE_TIME)
+      chosenTime.setTimeInMillis(now)
     updateButtons()
   }
 
@@ -118,10 +134,12 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
   }
 
 
-  override def onPrepareDialog(id: Int, dialog: Dialog) = id match {
-    case BikeActivity.SET_DATE_DIALOG => dialog.asInstanceOf[DateWheelDialog].date = chosenTime
-    case BikeActivity.SET_TIME_DIALOG => dialog.asInstanceOf[TimeWheelDialog].date = chosenTime
-    case _ => super.onPrepareDialog(id, dialog)
+  override def onPrepareDialog(id: Int, dialog: Dialog) {
+    id match {
+      case BikeActivity.SET_DATE_DIALOG => dialog.asInstanceOf[DateWheelDialog].date = chosenTime
+      case BikeActivity.SET_TIME_DIALOG => dialog.asInstanceOf[TimeWheelDialog].date = chosenTime
+      case _ => super.onPrepareDialog(id, dialog)
+    }
   }
 
   private def getLicense : CharSequence = {
