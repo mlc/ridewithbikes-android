@@ -11,6 +11,6 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:id="@+id/about_menu" android:title="@string/about_menu" android:icon="@android:drawable/ic_menu_info_details"/>
-  <item android:id="@+id/flattr_menu" android:title="@string/flattr_menu" />
+  <item android:id="@+id/about_menu" android:title="@string/about_menu" android:icon="@drawable/ic_menu_info_details"/>
+  <item android:id="@+id/flattr_menu" android:title="@string/flattr_menu" android:icon="@drawable/ic_menu_flattr"/>
 </menu>
