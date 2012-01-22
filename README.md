@@ -19,7 +19,7 @@ Questions, comments, suggestions, and patches are all most welcome.
 Copyright and Licensing
 -----------------------
 
-Copyright © 2011 Michael Castleman.
+Copyright © 2012 Michael Castleman.
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

@@ -51,7 +51,7 @@
     \n\nFor further information, see the Staten Island Ferry <a href="http://www.nyc.gov/html/dot/html/ferrybus/statfery.shtml#conduct">Passenger Rules of Conduct</a> and the additional <a href="http://www.nyc.gov/html/dot/html/bicyclists/bikesafety.shtml#si">Rules for Bicyclists</a>.
   </string>
   <string name="about_menu">About</string>
-  <string name="about_copyright">Copyright © 2011 Michael Castleman</string>
+  <string name="about_copyright">Copyright © 2012 Michael Castleman</string>
   <string name="about_comments">Ride with Bikes tells you when and if you can take your bike on NYC-area public transit.</string>
   <string name="about_web_url">http://github.com/mlc/ridewithbikes-android</string>
   <string name="about_web_title">Source code on GitHub</string>
