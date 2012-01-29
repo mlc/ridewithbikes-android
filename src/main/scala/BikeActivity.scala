@@ -34,14 +34,14 @@ object BikeActivity {
   final val MAX_SAVE_TIME = 5 * 60 * 1000L
   
   final val isHoneycomb = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+  lazy val newYork = TimeZone.getTimeZone("America/New_York")
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
-  lazy val newYork = TimeZone.getTimeZone("America/New_York")
   lazy val junction = Typeface.createFromAsset(getAssets, "fonts/Junction.otf")
 
-  lazy val dateFormat = DateFormat.getMediumDateFormat(this)
-  lazy val timeFormat = DateFormat.getTimeFormat(this)
+  lazy val dateFormat = { val df = DateFormat.getMediumDateFormat(this); df.setTimeZone(BikeActivity.newYork); df }
+  lazy val timeFormat = { val tf = DateFormat.getTimeFormat(this); tf.setTimeZone(BikeActivity.newYork); tf }
 
   lazy val mainTitle = findView(TR.main_title)
   lazy val systemSpinner = findView(TR.system_spinner)
@@ -68,7 +68,7 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   lazy val selfPackageInfo = getPackageManager.getPackageInfo(getPackageName, 0)
 
-  val chosenTime : Calendar = Calendar.getInstance(newYork, Locale.US)
+  val chosenTime : Calendar = Calendar.getInstance(BikeActivity.newYork, Locale.US)
   private var allDay = false
   private var lastDisappearTime = 0L
 
@@ -194,8 +194,6 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   private def updateButtons() {
     val d = chosenTime.getTime
-//    Log.d("BikeActivity", d.toString)
-//    Log.d("BikeActivity", allDay.toString)
     dateButton setText dateFormat.format(d)
     timeButton setText (if (allDay) getString(R.string.all_day) else timeFormat.format(d))
   }
