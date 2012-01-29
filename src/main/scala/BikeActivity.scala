@@ -11,7 +11,6 @@
 package com.ridewithbikes
 
 import android.graphics.Typeface
-import android.os.Bundle
 import Implicits._
 import transit.{Result, Direction, System}
 import TypedResource._
@@ -24,6 +23,7 @@ import android.text.SpannableStringBuilder
 import io.BufferedSource
 import android.net.Uri
 import android.app.{Dialog, AlertDialog, Activity}
+import android.os.{Build, Bundle}
 
 object BikeActivity {
   final val SET_DATE_DIALOG = 1
@@ -32,6 +32,8 @@ object BikeActivity {
 
   final val FLATTR_THING_ID = "ce83074882a92ef56a1fb154f1406c21"
   final val MAX_SAVE_TIME = 5 * 60 * 1000L
+  
+  final val isHoneycomb = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
 }
 
 class BikeActivity extends Activity with TypedActivity with ClickableText {
@@ -117,9 +119,15 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
 
   override def onCreateDialog(id: Int) = id match {
     case BikeActivity.SET_DATE_DIALOG =>
-      new DateWheelDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
+      if (BikeActivity.isHoneycomb)
+        new SettableDatePickerDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
+      else
+        new DateWheelDialog(this, setDate _, chosenTime.get(Calendar.YEAR), chosenTime.get(Calendar.MONTH), chosenTime.get(Calendar.DAY_OF_MONTH))
     case BikeActivity.SET_TIME_DIALOG =>
-      new TimeWheelDialog(this, setTime _, setAllDay _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
+      if (BikeActivity.isHoneycomb)
+        new SettableTimePickerDialog(this, setTime _, setAllDay _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE))
+      else
+        new TimeWheelDialog(this, setTime _, setAllDay _, chosenTime.get(Calendar.HOUR_OF_DAY), chosenTime.get(Calendar.MINUTE), DateFormat.is24HourFormat(this))
     case BikeActivity.ABOUT_DIALOG =>
       val message = new SpannableStringBuilder()
         .append(getText(R.string.about_comments)).append("\n\n")
@@ -133,11 +141,10 @@ class BikeActivity extends Activity with TypedActivity with ClickableText {
     case _ => super.onCreateDialog(id)
   }
 
-
   override def onPrepareDialog(id: Int, dialog: Dialog) {
     id match {
-      case BikeActivity.SET_DATE_DIALOG => dialog.asInstanceOf[DateWheelDialog].date = chosenTime
-      case BikeActivity.SET_TIME_DIALOG => dialog.asInstanceOf[TimeWheelDialog].date = chosenTime
+      case BikeActivity.SET_DATE_DIALOG | BikeActivity.SET_TIME_DIALOG =>
+        dialog.asInstanceOf[DateSettable].date_=(chosenTime)
       case _ => super.onPrepareDialog(id, dialog)
     }
   }

@@ -22,7 +22,7 @@ import java.text.{SimpleDateFormat, DateFormatSymbols}
 import android.os.Bundle
 
 class DateWheelDialog(val ctx: Context, val callback: OnDateSetListener)
-  extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener {
+  extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener with DateSettable {
 
   lazy val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
   lazy val view = inflater.inflate(R.layout.date_wheel, null)

@@ -23,7 +23,7 @@ import android.os.Bundle
 import java.util.{Locale, Calendar}
 
 class TimeWheelDialog(val ctx: Context, val callback: OnTimeSetListener, val alldayCallback: () => Any, val is24HourView: Boolean)
-  extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener {
+  extends AlertDialog(ctx) with TypedDialog with DialogInterface.OnClickListener with DateSettable {
   lazy val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE).asInstanceOf[LayoutInflater]
   lazy val view = inflater.inflate(R.layout.time_wheel, null)
   lazy val hourWheel = view.findView(TR.hour_wheel)
@@ -97,7 +97,7 @@ class TimeWheelDialog(val ctx: Context, val callback: OnTimeSetListener, val all
     which match {
     case DialogInterface.BUTTON_POSITIVE => if (callback != null)
       callback.onTimeSet(null, hourOfDay, minute)
-    case DialogInterface.BUTTON_NEUTRAL => if (callback != null)
+    case DialogInterface.BUTTON_NEUTRAL => if (alldayCallback != null)
       alldayCallback()
     case _ => ()
     }
