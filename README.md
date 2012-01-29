@@ -3,6 +3,8 @@ Ride with Bikes for Android
 
 This is a port of [Ride with Bikes] to the Android platform.
 
+<img src="http://assets.vermicel.li/rwb/screenshot-ics.png" width="480" height="800" alt="screenshot" /> <img src="http://assets.vermicel.li/rwb/screenshot-ginger.png" width="480" height="800" alt="screenshot" />
+
 The code is written in scala. To compile, make sure you have a copy of [sbt]
 — version 0.11 has been tested — and of the [Android SDK]. Then, set your
 `ANDROID_SDK_HOME` environment variable to point to the Android SDK as
