@@ -6,8 +6,8 @@ import AndroidKeys._
 object General {
   val settings = Defaults.defaultSettings ++ Seq (
     name := "Ride with Bikes",
-    version := "0.1",
-    versionCode := 1,
+    version := "1.0",
+    versionCode := 2,
     scalaVersion := "2.9.1",
     platformName in Android := "android-12"
   )
@@ -18,7 +18,7 @@ object General {
     TypedResources.settings ++
     AndroidMarketPublish.settings ++
     AndroidManifestGenerator.settings ++ Seq (
-      keyalias in Android := "change-me",
+      keyalias in Android := "mlc-android",
       libraryDependencies += "com.github.jbrechtel" %% "robospecs" % "0.2-SNAPSHOT" % "test"
     )
 }
